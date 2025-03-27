@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Games</title>
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --text-color: #1D1D1F;
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .dark-mode {
+            --primary-color: #0A84FF;
+            --text-color: #F5F5F7;
+            --bg-color: #000000;
+            --card-bg: #1D1D1F;
+            --shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-color);
+        }
+
+        .search-container {
+            margin: 20px 0;
+        }
+
+        #search {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        #search:focus {
+            border-color: var(--primary-color);
+        }
+
+        .section-title {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin: 30px 0 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .game-card a {
+            text-decoration: none;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .game-card h3 {
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .game-card p {
+            color: var(--text-color);
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .footer {
+            background: var(--card-bg);
+            padding: 20px;
+            margin-top: 40px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            background: var(--bg-color);
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .nav-link {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <h1>HTML5 Games</h1>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        </header>
+
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Search games..." oninput="searchGames()">
+        </div>
+
+        <h2 class="section-title">BEST GAMES</h2>
+        <div class="games-grid" id="bestGamesGrid"></div>
+
+        <h2 class="section-title">NEW GAMES</h2>
+        <div class="games-grid" id="newGamesGrid"></div>
+
+        <footer class="footer">
+            <nav class="nav-links">
+                <a href="#" class="nav-link">HOME</a>
+                <a href="#" class="nav-link">NEW</a>
+                <a href="#" class="nav-link">BEST</a>
+                <a href="#" class="nav-link">MATCH 3</a>
+                <a href="#" class="nav-link">BUBBLE SHOOTER</a>
+                <a href="#" class="nav-link">PUZZLE</a>
+                <a href="#" class="nav-link">QUIZ</a>
+                <a href="#" class="nav-link">CARDS</a>
+                <a href="#" class="nav-link">GIRLS</a>
+                <a href="#" class="nav-link">JUMP & RUN</a>
+                <a href="#" class="nav-link">ARCADE</a>
+                <a href="#" class="nav-link">RACING</a>
+                <a href="#" class="nav-link">SPORT</a>
+                <a href="#" class="nav-link">MULTIPLAYER</a>
+                <a href="#" class="nav-link">ALL GAMES</a>
+            </nav>
+            <div class="footer-bottom">
+                <p>© 2024 HTML5 Games. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const bestGames = [
+            {
+                title: 'Cookie Clicker Pro',
+                image: 'https://placehold.co/300x200/FF3B30/ffffff?text=Cookie+Clicker+Pro',
+                description: 'Click to make cookies, upgrade production lines, become a cookie empire tycoon',
+                url: 'games/cookie-clicker-pro/index.html'
+            },
+            {
+                title: 'Golf Orbit',
+                image: 'https://placehold.co/300x200/34C759/ffffff?text=Golf+Orbit',
+                description: 'Challenge golf in space, experience unique orbital physics gameplay',
+                url: 'games/golf-orbit/index.html'
+            },
+            {
+                title: 'Nuts and Bolts Puzzle',
+                image: 'https://placehold.co/300x200/5856D6/ffffff?text=Nuts+and+Bolts+Puzzle',
+                description: 'Solve mechanical puzzles, test your logical thinking skills',
+                url: 'games/nuts-and-bolts-puzzle/index.html'
+            },
+            {
+                title: 'Stickman GTA City',
+                image: 'https://placehold.co/300x200/FF2D55/ffffff?text=Stickman+GTA+City',
+                description: 'Embark on a stickman crime adventure in the city',
+                url: 'games/stickman-gta-city/index.html'
+            },
+            {
+                title: 'Basket Random',
+                image: 'https://placehold.co/300x200/007AFF/ffffff?text=Basket+Random',
+                description: 'Random basketball challenge, test your shooting skills',
+                url: 'games/basket-random/index.html'
+            },
+            {
+                title: 'BitLife',
+                image: 'https://placehold.co/300x200/5856D6/ffffff?text=BitLife',
+                description: 'Life simulation game, experience different life choices',
+                url: 'games/bitlife/index.html'
+            },
+            {
+                title: 'Drift Boss',
+                image: 'https://placehold.co/300x200/FF3B30/ffffff?text=Drift+Boss',
+                description: 'Extreme drifting challenge, become a drift master',
+                url: 'games/drift-boss/index.html'
+            },
+            {
+                title: 'ClassicCube',
+                image: 'https://placehold.co/300x200/34C759/ffffff?text=ClassicCube',
+                description: 'Classic block building game, unleash your creativity',
+                url: 'games/classicCube/index.html'
+            }
+        ];
+
+        const newGames = [
+            {
+                title: 'Monster Survivors',
+                image: 'https://placehold.co/300x200/FF3B30/ffffff?text=Monster+Survivors',
+                description: 'Survive against waves of monsters and upgrade your abilities',
+                url: 'games/monster-survivors/index.html'
+            },
+            {
+                title: 'Tank Arena',
+                image: 'https://placehold.co/300x200/FF3B30/ffffff?text=Tank+Arena',
+                description: 'Tank arena, engage in fierce battles with other players',
+                url: 'games/tank-arena/index.html'
+            },
+            {
+                title: 'Sprunki Warm Like Fire',
+                image: 'https://placehold.co/300x200/34C759/ffffff?text=Sprunki+Warm',
+                description: 'Warm adventure journey',
+                url: 'games/sprunki-warm-like-fire/index.html'
+            },
+            {
+                title: 'Global Guesser',
+                image: 'https://placehold.co/300x200/5856D6/ffffff?text=Global+Guesser',
+                description: 'Global geography guessing game, test your geography knowledge',
+                url: 'games/global-guesser/index.html'
+            },
+            {
+                title: 'Conquer Kingdoms',
+                image: 'https://placehold.co/300x200/FF2D55/ffffff?text=Conquer+Kingdoms',
+                description: 'Build your kingdom in this strategy game, conquer enemy territories',
+                url: 'games/conquer-kingdoms/index.html'
+            },
+            {
+                title: 'Mahjong',
+                image: 'https://placehold.co/300x200/007AFF/ffffff?text=Mahjong',
+                description: 'Experience classic Mahjong game, challenge your memory and strategy',
+                url: 'games/mahjong/index.html'
+            },
+            {
+                title: 'Survival Island',
+                image: 'https://placehold.co/300x200/5856D6/ffffff?text=Survival+Island',
+                description: 'Survive on a mysterious island, gather resources and build shelters',
+                url: 'games/survival-island/index.html'
+            },
+            {
+                title: 'Turbo Race 3D',
+                image: 'https://placehold.co/300x200/FF3B30/ffffff?text=Turbo+Race+3D',
+                description: 'Engage in thrilling 3D track racing',
+                url: 'games/turbo-race-3d/index.html'
+            },
+            {
+                title: 'Cookie Clicker Pro',
+                image: 'https://placehold.co/300x200/34C759/ffffff?text=Cookie+Clicker+Pro',
+                description: 'Click to make cookies, upgrade production lines, become a cookie empire tycoon',
+                url: 'games/cookie-clicker-pro/index.html'
+            }
+        ];
+
+        function initGames() {
+            const bestGamesGrid = document.getElementById('bestGamesGrid');
+            const newGamesGrid = document.getElementById('newGamesGrid');
+
+            bestGames.forEach(game => {
+                const card = createGameCard(game);
+                bestGamesGrid.appendChild(card);
+            });
+
+            newGames.forEach(game => {
+                const card = createGameCard(game);
+                newGamesGrid.appendChild(card);
+            });
+        }
+
+        function createGameCard(game) {
+            const card = document.createElement('a');
+            card.className = 'game-card';
+            card.href = game.url || '#';
+            card.target = '_blank';
+            card.innerHTML = `
+                <img src="${game.image}" alt="${game.title}">
+                <h3>${game.title}</h3>
+                <p>${game.description}</p>
+            `;
+            return card;
+        }
+
+        function searchGames() {
+            const searchText = document.getElementById('search').value.toLowerCase();
+            const bestCards = document.querySelectorAll('#bestGamesGrid .game-card');
+            const newCards = document.querySelectorAll('#newGamesGrid .game-card');
+
+            bestCards.forEach((card, index) => {
+                const game = bestGames[index];
+                const isMatch = game.title.toLowerCase().includes(searchText) ||
+                              game.description.toLowerCase().includes(searchText);
+                card.style.display = isMatch ? '' : 'none';
+            });
+
+            newCards.forEach((card, index) => {
+                const game = newGames[index];
+                const isMatch = game.title.toLowerCase().includes(searchText) ||
+                              game.description.toLowerCase().includes(searchText);
+                card.style.display = isMatch ? '' : 'none';
+            });
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+
+        window.onload = initGames;
+    </script>
+</body>
+</html>
