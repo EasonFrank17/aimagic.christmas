@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basket Random - HTML5 Games</title>
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --text-color: #1D1D1F;
+            --bg-color: #F5F5F7;
+            --card-bg: #FFFFFF;
+            --shadow: 0 4px 8px rgba(0,0,0,0.05);
+            --accent-color: #FF3B30;
+            --secondary-text: #86868B;
+        }
+
+        .dark-mode {
+            --primary-color: #0A84FF;
+            --text-color: #F5F5F7;
+            --bg-color: #000000;
+            --card-bg: #1D1D1F;
+            --shadow: 0 4px 8px rgba(0,0,0,0.2);
+            --accent-color: #FF453A;
+            --secondary-text: #98989D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            transition: background-color 0.3s;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            text-decoration: none;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 16px;
+        }
+
+        .game-title {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-color);
+        }
+
+        .game-description {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--secondary-text);
+            font-size: 18px;
+        }
+
+        .game-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            margin-bottom: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            margin-bottom: 10px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-list {
+            counter-reset: feature-counter;
+        }
+
+        .feature-list li {
+            counter-increment: feature-counter;
+        }
+
+        .feature-list li::before {
+            content: '';
+            width: 24px;
+            height: 24px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            transition: transform 0.3s;
+        }
+
+        .feature-list li:hover::before {
+            transform: scale(1.2);
+        }
+
+        /* Game Features icons */
+        .feature-list li:nth-child(1)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF3B30'/%3E%3Cstop offset='100%25' style='stop-color:%23FF9500'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad1)' d='M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z'/%3E%3C/svg%3E");
+        }
+
+        .feature-list li:nth-child(2)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%235856D6'/%3E%3Cstop offset='100%25' style='stop-color:%23FF2D55'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad2)' d='M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2m7 14h2v-2h2v-2h-2v-2h-2v2H9v2h2v2M7 7h2v2H7V7m8 0h2v2h-2V7z'/%3E%3C/svg%3E");
+        }
+
+        .feature-list li:nth-child(3)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FFD60A'/%3E%3Cstop offset='100%25' style='stop-color:%23FF3B30'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad3)' d='M11 15H6l7-14v8h5l-7 14v-8z'/%3E%3C/svg%3E");
+        }
+
+        .feature-list li:nth-child(4)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad4' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2332D74B'/%3E%3Cstop offset='100%25' style='stop-color:%23007AFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad4)' d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+        }
+
+        /* How to Play icons */
+        .feature-card:last-child .feature-list li:nth-child(1)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad5' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF9500'/%3E%3Cstop offset='100%25' style='stop-color:%23FF2D55'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad5)' d='M15.07 1.01h-6v2h6v-2zm-4 13h2v-6h-2v6zm8.03-6.62l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.14 4.74 14.19 4 12.07 4c-4.97 0-9 4.03-9 9s4.02 9 9 9 9-4.03 9-9c0-2.11-.74-4.06-1.97-5.61zm-7.03 12.62c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z'/%3E%3C/svg%3E");
+        }
+
+        .feature-card:last-child .feature-list li:nth-child(2)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad6' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23AF52DE'/%3E%3Cstop offset='100%25' style='stop-color:%235856D6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad6)' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z'/%3E%3C/svg%3E");
+        }
+
+        .feature-card:last-child .feature-list li:nth-child(3)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad7' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%2332D74B'/%3E%3Cstop offset='100%25' style='stop-color:%23FFD60A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad7)' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7z'/%3E%3C/svg%3E");
+        }
+
+        .feature-card:last-child .feature-list li:nth-child(4)::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cdefs%3E%3ClinearGradient id='grad8' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23FF9500'/%3E%3Cstop offset='100%25' style='stop-color:%23FF3B30'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad8)' d='M19.5 3.5L18 2l-1.5 1.5L15 2l-1.5 1.5L12 2l-1.5 1.5L9 2 7.5 3.5 6 2 4.5 3.5 3 2v20l1.5-1.5L6 22l1.5-1.5L9 22l1.5-1.5L12 22l1.5-1.5L15 22l1.5-1.5L18 22l1.5-1.5L21 22V2l-1.5 1.5zM19 19.09H5V4.91h14v14.18z'/%3E%3C/svg%3E");
+        }
+
+        .about-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .about-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .about-section p {
+            color: var(--text-color);
+            line-height: 1.8;
+        }
+
+        .game-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .footer {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--text-color);
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .game-description {
+                font-size: 16px;
+                padding: 0 15px;
+            }
+
+            .feature-card {
+                padding: 15px;
+            }
+
+            .about-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="../../index.html" class="back-button">← Back to Games</a>
+            <h1 class="game-title">Basket Random</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+        </header>
+
+        <p class="game-description">Experience the thrill of basketball with unpredictable twists and turns in this exciting arcade game!</p>
+
+        <div class="game-container">
+            <iframe class="game-frame" src="https://html5.gamedistribution.com/bf1268dccb5d43e7970bb3edaa54afc8/?gd_sdk_referrer_url=https://www.onlinegames.io/basket-random" sandbox="allow-scripts allow-same-origin allow-popups" allowfullscreen></iframe>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h2>Game Features</h2>
+                <ul class="feature-list">
+                    <li>Intuitive touch & mouse controls</li>
+                    <li>Unique random challenges</li>
+                    <li>Engaging power-ups system</li>
+                    <li>Competitive scoring system</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h2>How to Play</h2>
+                <ul class="feature-list">
+                    <li>Aim with mouse or touch controls</li>
+                    <li>Release to shoot the basketball</li>
+                    <li>Master the perfect timing</li>
+                    <li>Chain combos for bonus points</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="about-section">
+            <h2>About Basket Random</h2>
+            <p>Basket Random is an addictive basketball arcade game that combines classic shooting mechanics with unpredictable elements. Test your skills against increasingly challenging levels, unlock new game modes, and compete for high scores. With its intuitive controls and engaging gameplay, every shot becomes an exciting opportunity to showcase your basketball prowess.</p>
+        </div>
+
+        <footer class="footer">
+            <p>© 2024 HTML5 Games. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // 暗黑模式切换
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
